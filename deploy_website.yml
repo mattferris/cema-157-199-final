@@ -1,0 +1,19 @@
+- name: Deploy website
+  hosts: testing
+
+  - name: Copy website files
+    ansible.builtin.copy:
+      src: files/index.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Copy website configuration
+    ansible.builtin.template:
+      src: default.j2
+      dest: /etc/nginx/sites-available/default
+      owner: root
+      group: root
+      mode: 0644
+
