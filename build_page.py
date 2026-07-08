@@ -6,24 +6,47 @@
 #
 # TODO:
 #
-#     - Add a "author" key in the "config" dictionary below that
+#     - Add a "author" key in the "template_vars" dictionary below that
 #       references the "USER" environment variable
 #
-#     - Add a "domain" key in the "config" dictionary below that
+#     - Add a "domain" key in the "template_vars" dictionary below that
 #       reads the reads the domain name of the website from a program
 #       argument specified when executing the program
 #
 
-config = {
+import sys
+
+#
+# If there aren't enough arguments supplied, print a help message
+#
+if len(sys.argv) < 3:
+    help = """usage: {name} <outfile> <domain>
+
+    Creates a webpage based on a template.
+
+    <outfile> is the filename of the resulting webpage
+    <domain> is the domain name where the webpage will be hosted"""
+    print(help.format(name=sys.argv[0]))
+    exit(1)
+
+
+#
+# Define the template variables
+#
+template_vars = {
     "title": "Example Org Inc.",
     "motto": "A positive example for all"
 }
 
+#
+# Set the outfile
+#
+outfile = sys.argv[1]
+
 
 #
-# Do not make changes below this point
+# Process the template
 #
-
 template = """<!doctype html>
 <html lang="en">
   <head>
@@ -37,4 +60,5 @@ template = """<!doctype html>
   </body>
 </html>"""
 
-print(template.format(**config))
+with open(outfile, 'w') as f:
+    f.write(template.format(**template_vars))
