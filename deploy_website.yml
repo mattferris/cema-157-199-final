@@ -2,18 +2,38 @@
   hosts: testing
 
   - name: Copy website files
-    ansible.builtin.copy:
-      src: files/index.html
+    ansible.builting.copy:
+      src: index.html
       dest: /var/www/html/index.html
       owner: root
       group: root
       mode: 0644
 
-  - name: Copy website configuration
-    ansible.builtin.template:
-      src: default.j2
-      dest: /etc/nginx/sites-available/default
+  - name: Copy dummy certifiate
+    ansible.builtin.copy:
+      src: cert/cert.pem
+      dest: /etc/nginx/cert.pem
       owner: root
       group: root
       mode: 0644
 
+  - name: Copy dummy certificate key
+    ansible.builtin.copy:
+      src: cert/key.pem
+      dest: /etc/nginx/key.pem
+      owner: root
+      group: root
+      mode: 0600
+
+  - name: Copy website configuration
+    ansible.builtin.template:
+      src: templates/default.j2
+      dest: /etc/nginx/sites-enabled/default
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Restart nginx
+    ansible.builtin.service:
+      name: nginx
+      state: restarted
